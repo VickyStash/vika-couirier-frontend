@@ -1,23 +1,32 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import Main from './app/screens/main';
+import Order from './app/screens/order';
+
+export const NavigationApp = createStackNavigator({
+  Main: {
+    screen: Main,
+    navigationOptions: {
+      title: 'Main', 
+      headerStyle: {
+        marginTop: Expo.Constants.statusBarHeight
+      },
+    },
+  },
+  Order: {
+    screen: Order,
+    navigationOptions: {
+      title: 'Order',
+      headerStyle: {
+        marginTop: Expo.Constants.statusBarHeight
+      },
+    },
+  }
+});
 
 export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open myyyy up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
+    return <NavigationApp />
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
