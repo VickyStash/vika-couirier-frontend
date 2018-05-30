@@ -11,14 +11,14 @@ export default class Main extends Component {
     title: 'Home',
   };
   render() {
-    return (
+     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.headerRow} onPress={() => this.props.navigation.navigate('Order')}>
+        <View style={styles.headerRow}>
           <View style={styles.smallColumn}><Text style={styles.headerRowText}>Id</Text></View>
-          <View style={styles.bigColumn}><Text style={styles.headerRowText}>adress</Text></View>
+          <View style={styles.bigColumn}><Text style={styles.headerRowText}>Adress</Text></View>
           <View style={styles.smallColumn}><Text style={styles.headerRowText}>Time</Text></View>
           <View style={styles.bigColumn}><Text style={styles.headerRowText}>Status</Text></View>
-        </TouchableOpacity>
+        </View>
        <OrderRow navigation={this.props.navigation}/>
        <OrderRow navigation={this.props.navigation}/>
       </View>
@@ -27,30 +27,32 @@ export default class Main extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#ffb5e8',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: height/10,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderStyle: 'solid',
-    backgroundColor: '#d5aaff',
-  },
-  bigColumn: {
-    flex: 3,
-    height: height/10
-  },
-  smallColumn: {
-    flex: 2,
-    height: height/10
-  },
-  headerRowText: {
-    fontSize: 14,
-  }
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#ffb5e8',
+    },
+    headerRow: {
+        flexDirection: 'row',
+        height: height/10,
+        borderWidth: 1,
+        borderColor: 'white',
+        borderStyle: 'solid',
+        backgroundColor: '#d5aaff',
+    },
+    bigColumn: {
+        flex: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: height/10,
+    },
+    smallColumn: {
+        flex: 2,
+        alignItems: 'center',
+        height: height/10,
+        justifyContent: 'center'
+    },
+    headerRowText: {
+        fontSize: 14,
+    }
 });
