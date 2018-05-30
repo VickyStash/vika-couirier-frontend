@@ -10,7 +10,8 @@ export const NavigationApp = createStackNavigator({
     navigationOptions: {
       title: 'Main', 
       headerStyle: {
-        marginTop: Expo.Constants.statusBarHeight
+          height : 25,
+          marginTop: Expo.Constants.statusBarHeight,
       },
     },
   },
@@ -19,7 +20,8 @@ export const NavigationApp = createStackNavigator({
     navigationOptions: {
       title: 'Order',
       headerStyle: {
-        marginTop: Expo.Constants.statusBarHeight
+          height : 25,
+          marginTop: Expo.Constants.statusBarHeight,
       },
     },
   }

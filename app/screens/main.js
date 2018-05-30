@@ -35,9 +35,6 @@ const styles = StyleSheet.create({
     headerRow: {
         flexDirection: 'row',
         height: height/10,
-        borderWidth: 1,
-        borderColor: 'white',
-        borderStyle: 'solid',
         backgroundColor: '#d5aaff',
     },
     bigColumn: {
