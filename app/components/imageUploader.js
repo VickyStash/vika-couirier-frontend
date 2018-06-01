@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { ImagePicker } from 'expo'
-import {View, Button, Image, Dimensions} from 'react-native'
+import React, { Component } from 'react';
+import { ImagePicker } from 'expo';
+import {View, Button, Image, Dimensions, StyleSheet, Text} from 'react-native';
+import Geocoder from 'react-native-geocoder';
 
 const { width, height } = Dimensions.get('window');
 
@@ -8,9 +9,14 @@ export default class imageUploader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: 'https://sigma-static-files.imgix.net/default_profile_pic.png'
+            image: 'https://sigma-static-files.imgix.net/default_profile_pic.png',
+            latitude: 'upload a photo to get latitude',
+            longitude: 'upload a photo to get longitude',
+            error: null,
+            location: 'mesto',
         }
     }
+
     uploadImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -19,17 +25,40 @@ export default class imageUploader extends Component {
         });
         if (!result.cancelled) {
             this.setState({ image: result.uri });
+            this.refresh();
         }
     };
+
+    refresh = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    error: null,
+                });
+            },
+            (error) => this.setState({ error: error.message }),
+        );
+    };
+
     render() {
         return(
             <View>
                 <Image style={{width: 'auto', height: ((height-40)/10)*3}} source={{uri: this.state.image}} />
                 <Button
                     onPress={this.uploadImage}
-                    title={'Take a photo'}
+                    title={'Upload a photo'}
                 />
+                <Text>Latitude: {this.state.latitude}</Text>
+                <Text>Longitude: {this.state.longitude}</Text>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    locationParam: {
+        height: (height-40)/20,
+    },
+})

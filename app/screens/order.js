@@ -48,7 +48,6 @@ export default class Order extends Component {
             <View style={styles.imageBlock}>
                 <ImageUploader/>
             </View>
-            <View style={styles.paramRow}><Text style={styles.paramRowText}>Coordinates</Text></View>
             <View style={styles.paramRow}>
                 <Text style={styles.paramRowText}>Id :</Text>
                 <Text style={styles.paramRowText}>1234</Text>
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     imageBlock: {
-       height: ((height-40)/10)*3,
+       height: ((height-40)/10)*4,
        width: width-40,
        justifyContent: 'center',
     },
