@@ -1,8 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import { createStackNavigator } from 'react-navigation';
 import Main from './app/screens/main';
 import Order from './app/screens/order';
+import reducers from './app/reducers';
+
+const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__});
+
+function configureStore(initialState) {
+  const enhancer = compose(
+      applyMiddleware(
+          thunkMiddleware,
+          loggerMiddleware,
+      ),
+  );
+  return createStore(reducers, initialState, enhancer)
+}
+
+const store = configureStore({});
 
 export const NavigationApp = createStackNavigator({
   Main: {
@@ -29,6 +47,10 @@ export const NavigationApp = createStackNavigator({
 
 export default class App extends React.Component {
   render() {
-    return <NavigationApp />
+    return (
+        <Provider store={store}>
+            <NavigationApp />
+        </Provider>
+    )
   }
 }

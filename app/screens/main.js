@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions,TouchableOpacity } from 'react-native';
-import Expo from 'expo';
-import { createStackNavigator } from 'react-navigation';
+import { StyleSheet, Text, View, Dimensions,TouchableOpacity, Button } from 'react-native';
 import OrderRow from '../components/orderRow';
+import { ordersRequest } from '../actions';
+import { connect } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
-export default class Main extends Component {
+class Main extends Component {
   static navigationOptions = {
     title: 'Home',
   };
   render() {
+      const { ordersRequest } = this.props;
      return (
       <View style={styles.container}>
+          <Button
+              onPress={ordersRequest}
+              title="Ok"
+          />
         <View style={styles.headerRow}>
           <View style={styles.smallColumn}><Text style={styles.headerRowText}>Id</Text></View>
           <View style={styles.bigColumn}><Text style={styles.headerRowText}>Adress</Text></View>
@@ -25,6 +30,14 @@ export default class Main extends Component {
     );
   }
 }
+
+
+const mapStateToProps = ({ orders }) => ({ orders });
+
+export default connect(mapStateToProps, { ordersRequest })(
+    Main
+);
+
 
 const styles = StyleSheet.create({
     container: {
