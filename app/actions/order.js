@@ -1,23 +1,19 @@
-import {
-    ORDERS_RESPONSE,
-    API_URL
-} from "../constants/action-types"
-
+import { ORDERS_RESPONSE, API_URL } from "../constants/action-types"
 
 export const getOrders = (result) => {
     return {
         type: ORDERS_RESPONSE,
-        result
+        result,
     }
 }
 
 function fetchOrders() {
-    return fetch('192.168.1.3:5000/orders', {
-        method: 'POST',
+    return fetch(API_URL+'/orders', {
+        method: 'GET',
         mode: 'cors',
         headers: {
+            'Accept': 'application/json',
             'Content-type': 'application/json',
-            'Accept': 'application/json'
         },
     });
 }

@@ -3,6 +3,7 @@ import {
 } from "../constants/action-types"
 
 const initialState = {
+    orders: []
 }
 
 export default (state = initialState, action) => {
@@ -10,7 +11,7 @@ export default (state = initialState, action) => {
         case ORDERS_RESPONSE:
             return {
                 ...state,
-                ...action.result,
+                orders: action.result,
             };
         default:
             return state;
