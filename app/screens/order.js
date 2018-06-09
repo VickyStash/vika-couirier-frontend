@@ -14,9 +14,9 @@ export default class Order extends Component {
       super(props);
       this.state = {
           isAdressEditing: false,
-          adress: 'Any street',
-          adressBuf: 'Any street',
-          status: 'tut',
+          adress: this.props.navigation.state.params.adress,
+          adressBuf: this.props.navigation.state.params.adress,
+          status: this.props.navigation.state.params.status,
           statusBuf: 'buff',
       };
   }
@@ -43,6 +43,9 @@ export default class Order extends Component {
 
 
   render() {
+      const { order } = this.props.navigation.state.params;
+      console.log(this.state.adressBuf+'adress buf');
+      console.log(this.state.adress+'adress');
     return (
         <View style={styles.container}>
             <View style={styles.imageBlock}>
@@ -50,18 +53,21 @@ export default class Order extends Component {
             </View>
             <View style={styles.paramRow}>
                 <Text style={styles.paramRowText}>Id :</Text>
-                <Text style={styles.paramRowText}>1234</Text>
+                <Text style={styles.paramRowText}>{order._id}</Text>
                 <Text style={styles.paramRowText} />
             </View>
                 <View style={styles.paramRow}>
                     <Text style={styles.paramRowText}>Adress :</Text>
+                    {this.state.isAdressEditing ?
                         <TextInput
                             style={styles.paramRowText}
                             placeholderTextColor='#000000'
-                            placeholder={this.state.adressBuf}
+                            placeholder={order.adress}
                             onChangeText={(text) => this.setState({adressBuf: text})}
-                            editable={this.state.isAdressEditing}
                         />
+                        :
+                        <Text style={styles.paramRowText}>{order.adress}</Text>
+                    }
                     {this.state.isAdressEditing ?
                         <View style={styles.buttonWrap}>
                             <Button
@@ -89,18 +95,20 @@ export default class Order extends Component {
                     }
                 </View>
             <View style={styles.paramRow}>
-                <Text style={styles.paramRowText}>Time field :</Text>
-                <Text style={styles.paramRowText}>13:40</Text>
+                <Text style={styles.paramRowText}>Status field</Text>
+                <ModalDropdown
+                    options={['IN PROCESS', 'READY']}
+                    style={styles.dropdown}
+                    dropdownStyle={styles.dropdown_dropdown}
+                    dropdownTextStyle={{fontSize: 12}}
+                    defaultValue={order.status}
+                    onSelect={(value) => this.setState({statusBuf : value})}
+                />
                 <Text style={styles.paramRowText} />
             </View>
             <View style={styles.paramRow}>
-                <Text style={styles.paramRowText}>Status field</Text>
-                <ModalDropdown
-                    options={['In process', 'Ready']}
-                    style={styles.dropdown}
-                    dropdownStyle={styles.dropdown_dropdown}
-                    onSelect={(value) => this.setState({statusBuf : value})}
-                />
+                <Text style={styles.paramRowText}>Time field :</Text>
+                <Text style={styles.paramRowText}>{order.delivery_time}</Text>
                 <Text style={styles.paramRowText} />
             </View>
             <View style={styles.paramRow}>
@@ -158,7 +166,7 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     dropdown_dropdown: {
-        height: 70,
+        height: 50,
     }
 });
 

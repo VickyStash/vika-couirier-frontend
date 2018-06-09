@@ -5,12 +5,13 @@ const { width, height } = Dimensions.get('window');
 
 
 export default class OrderRow extends Component {
+
   render() {
     return (
-      <TouchableOpacity style={styles.orderRow} onPress={() => this.props.navigation.navigate('Order')}>
-          <View style={styles.smallColumn}><Text style={styles.rowText}>Id</Text></View>
+      <TouchableOpacity style={styles.orderRow} onPress={() => this.props.navigation.navigate('Order',{order : this.props.order})}>
+          <View style={styles.smallColumn}><Text style={styles.rowText}>{this.props.order._id}</Text></View>
           <View style={styles.bigColumn}><Text style={styles.rowText}>{this.props.order.adress}</Text></View>
-          <View style={styles.smallColumn}><Text style={styles.rowText}></Text></View>
+          <View style={styles.smallColumn}><Text style={styles.rowText}>{this.props.order.delivery_time}</Text></View>
           <View style={styles.bigColumn}><Text style={styles.rowText}>{this.props.order.status}</Text></View>
       </TouchableOpacity>
     );

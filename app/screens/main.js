@@ -29,7 +29,7 @@ class Main extends Component {
               this.props.orders &&
               this.props.orders.map((order) =>{
                   return(
-                      <OrderRow navigation={this.props.navigation} key={order.id} order={order} />
+                      <OrderRow navigation={this.props.navigation} key={order._id} order={order} />
                   )
               })
           }
