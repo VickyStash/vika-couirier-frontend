@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 
 export default class imageUploader extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             image: 'https://sigma-static-files.imgix.net/default_profile_pic.png',
             latitude: 'upload a photo to get latitude',
