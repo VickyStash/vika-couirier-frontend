@@ -14,11 +14,9 @@ class Main extends Component {
   componentDidMount(){
       this.props.ordersRequest();
   }
-  //componentDidUpdate(){
-  //  this.props.ordersRequest();
- //}
+
   render() {
-      console.log(this.props.orders+'вооооот оно');
+   //   console.log(this.props.orders+'вооооот оно');
       const { ordersRequest } = this.props;
      return (
       <View style={styles.container}>

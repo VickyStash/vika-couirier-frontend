@@ -47,16 +47,13 @@ class Order extends Component {
     }
 
     componentDidMount(){
-        this.props.orderRequest(this.props.navigation.state.params.order._id);
+      this.props.orderRequest(this.props.navigation.state.params.order._id);
     }
-   //componentDidUpdate(){
-    // this.props.orderRequest(this.props.navigation.state.params.order._id);
-   // }
 
   renderScreen() {
-      console.log(this.props.order.adress ? "Праааааааааааааааааааааааввввввв" :"Ytttttttttttttttttttttttttttt" );
-  //    const { order } = this.props.navigation.state.params;
-    return (
+      //  console.log(this.props.order.adress ? "Праааааааааааааааааааааааввввввв" :"Ytttttttttttttttttttttttttttt" );
+      //    const { order } = this.props.navigation.state.params;
+      return (
         <View style={styles.container}>
             <View style={styles.imageBlock}>
                 <ImageUploader/>
@@ -111,7 +108,7 @@ class Order extends Component {
                     style={styles.dropdown}
                     dropdownStyle={styles.dropdown_dropdown}
                     defaultValue={this.props.order.status}
-                    dropdownTextStyle={{fontSize: 12}}
+                    dropdownTextStyle={{fontSize: 12, height: 15}}
                     onSelect={(value) => this.setState({statusBuf : value})}
                 />
                 <Text style={styles.paramRowText} />
