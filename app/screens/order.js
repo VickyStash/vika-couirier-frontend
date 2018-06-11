@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, Button, Picker } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, Button, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ImageUploader from '../components/imageUploader';
+import {orderRequest, updateOrderRequest} from '../actions';
+import { connect } from 'react-redux';
 import Expo from 'expo';
 
 const { width, height } = Dimensions.get('window');
-export default class Order extends Component {
+class Order extends Component {
   static navigationOptions = {
     title: 'Order',
   };
@@ -14,10 +16,7 @@ export default class Order extends Component {
       super(props);
       this.state = {
           isAdressEditing: false,
-          adress: this.props.navigation.state.params.adress,
-          adressBuf: this.props.navigation.state.params.adress,
-          status: this.props.navigation.state.params.status,
-          statusBuf: 'buff',
+          adressBuf: this.props.order.adress,
       };
   }
 
@@ -28,32 +27,40 @@ export default class Order extends Component {
   }
 
   saveAdress = () => {
+      this.props.updateOrderRequest(
+          this.props.order._id,
+          this.state.adressBuf,
+          this.props.order.delivery_time,
+          this.props.order.status,
+          this.props.photo,
+      )
       this.setState({
           isAdressEditing: false,
-          adress: this.state.adressBuf,
       })
   }
 
   cancelAdress = () => {
       this.setState({
           isAdressEditing: false,
-          adressBuf: this.state.adress,
+          adressBuf: this.props.order.adress,
       })
     }
 
+    componentDidMount(){
+      this.props.orderRequest(this.props.navigation.state.params.order._id);
+    }
 
-  render() {
-      const { order } = this.props.navigation.state.params;
-      console.log(this.state.adressBuf+'adress buf');
-      console.log(this.state.adress+'adress');
-    return (
+  renderScreen() {
+      //  console.log(this.props.order.adress ? "Праааааааааааааааааааааааввввввв" :"Ytttttttttttttttttttttttttttt" );
+      //    const { order } = this.props.navigation.state.params;
+      return (
         <View style={styles.container}>
             <View style={styles.imageBlock}>
                 <ImageUploader/>
             </View>
             <View style={styles.paramRow}>
                 <Text style={styles.paramRowText}>Id :</Text>
-                <Text style={styles.paramRowText}>{order._id}</Text>
+                <Text style={styles.paramRowText}>{this.props.order._id}</Text>
                 <Text style={styles.paramRowText} />
             </View>
                 <View style={styles.paramRow}>
@@ -62,11 +69,11 @@ export default class Order extends Component {
                         <TextInput
                             style={styles.paramRowText}
                             placeholderTextColor='#000000'
-                            placeholder={order.adress}
+                            placeholder={this.props.order.adress}
                             onChangeText={(text) => this.setState({adressBuf: text})}
                         />
                         :
-                        <Text style={styles.paramRowText}>{order.adress}</Text>
+                        <Text style={styles.paramRowText}>{this.props.order.adress}</Text>
                     }
                     {this.state.isAdressEditing ?
                         <View style={styles.buttonWrap}>
@@ -100,28 +107,31 @@ export default class Order extends Component {
                     options={['IN PROCESS', 'READY']}
                     style={styles.dropdown}
                     dropdownStyle={styles.dropdown_dropdown}
-                    dropdownTextStyle={{fontSize: 12}}
-                    defaultValue={order.status}
+                    defaultValue={this.props.order.status}
+                    dropdownTextStyle={{fontSize: 12, height: 15}}
                     onSelect={(value) => this.setState({statusBuf : value})}
                 />
                 <Text style={styles.paramRowText} />
             </View>
             <View style={styles.paramRow}>
                 <Text style={styles.paramRowText}>Time field :</Text>
-                <Text style={styles.paramRowText}>{order.delivery_time}</Text>
+                <Text style={styles.paramRowText}>{this.props.order.delivery_time}</Text>
                 <Text style={styles.paramRowText} />
-            </View>
-            <View style={styles.paramRow}>
-                <Button
-                    title="Delete"
-                    style={styles.delButton}
-                    color='black'
-                />
             </View>
         </View>
     );
   }
+  render(){
+      if(this.props.order.adress) return this.renderScreen(); else return(<ActivityIndicator/>);
+  }
 }
+
+const mapStateToProps = (state) => {
+    const { order, orders } = state.order;
+    return { order, orders };
+};
+
+export default connect(mapStateToProps, { orderRequest, updateOrderRequest })( Order );
 
 const styles = StyleSheet.create({
     container: {

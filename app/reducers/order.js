@@ -1,9 +1,8 @@
-import {
-    ORDERS_RESPONSE
-} from "../constants/action-types"
+import { ORDERS_RESPONSE, ORDERS_UPDATE_RESPONSE, ORDER_RESPONSE } from "../constants/action-types"
 
 const initialState = {
-    orders: []
+    orders: [],
+    order: {},
 }
 
 export default (state = initialState, action) => {
@@ -12,6 +11,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 orders: action.result,
+            };
+        case ORDER_RESPONSE:
+            return {
+                ...state,
+                order: action.result,
+            };
+        case ORDERS_UPDATE_RESPONSE:
+            return {
+                ...state,
+                order: action.result,
             };
         default:
             return state;
