@@ -1,4 +1,4 @@
-import { ORDERS_RESPONSE, ORDERS_UPDATE_RESPONSE, API_URL, ORDER_RESPONSE } from "../constants/action-types"
+import { ORDERS_RESPONSE, ORDERS_UPDATE_RESPONSE, API_URL, ORDER_RESPONSE, ORDER_DELETE_RESPONSE } from "../constants/action-types"
 
 export const getOrders = (result) => {
     return {
@@ -90,6 +90,40 @@ export const updateOrderRequest = (id, adress, delivery_time, status, photo) => 
             .then(order => order.json())
             .then(order => {
                 dispatch(updateOrder(order));
+                dispatch(orderRequest(order._id));
+                dispatch(ordersRequest());
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+    }
+}
+
+export const deleteOrder = (result) => {
+    return {
+        type: ORDER_DELETE_RESPONSE,
+        result,
+    }
+}
+
+function fetchDeleteOrder(id) {
+    return fetch(API_URL+'/orders/'+id, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json',
+        },
+    });
+}
+
+export const orderDeleteRequest = (id) => {
+    return function (dispatch) {
+        return fetchDeleteOrder(id)
+            .then(info => info.json())
+            .then(info => {
+                dispatch(deleteOrder(info));
+                dispatch(ordersRequest());
             }).catch((error)=>{
                 console.log(error);
             })

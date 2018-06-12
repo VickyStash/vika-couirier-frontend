@@ -16,7 +16,6 @@ class Main extends Component {
   }
 
   render() {
-   //   console.log(this.props.orders+'вооооот оно');
       const { ordersRequest } = this.props;
      return (
       <View style={styles.container}>

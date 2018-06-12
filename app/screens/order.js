@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, Button
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ImageUploader from '../components/imageUploader';
-import {orderRequest, updateOrderRequest} from '../actions';
+import {orderRequest, updateOrderRequest, ordersRequest, orderDeleteRequest} from '../actions';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 
@@ -33,8 +33,8 @@ class Order extends Component {
           this.props.order.delivery_time,
           this.props.order.status,
           this.props.photo,
-      )
-      this.setState({
+      );
+         this.setState({
           isAdressEditing: false,
       })
   }
@@ -46,17 +46,33 @@ class Order extends Component {
       })
     }
 
+    editStatus = (value) => {
+        this.props.updateOrderRequest(
+            this.props.order._id,
+            this.props.order.adress,
+            this.props.order.delivery_time,
+            value,
+            this.props.photo,
+        );
+    }
+    onDeleteButton = () => {
+      this.props.orderDeleteRequest(this.props.order._id);
+      this.props.navigation.navigate('Main');
+    }
+
     componentDidMount(){
       this.props.orderRequest(this.props.navigation.state.params.order._id);
+      this.setState({
+          adressBuf: this.props.navigation.state.params.order.adress,
+      })
     }
 
   renderScreen() {
-      //  console.log(this.props.order.adress ? "Праааааааааааааааааааааааввввввв" :"Ytttttttttttttttttttttttttttt" );
-      //    const { order } = this.props.navigation.state.params;
+      console.log(this.state.adressBuf);
       return (
         <View style={styles.container}>
             <View style={styles.imageBlock}>
-                <ImageUploader/>
+                <ImageUploader order={this.props.order}/>
             </View>
             <View style={styles.paramRow}>
                 <Text style={styles.paramRowText}>Id :</Text>
@@ -108,8 +124,8 @@ class Order extends Component {
                     style={styles.dropdown}
                     dropdownStyle={styles.dropdown_dropdown}
                     defaultValue={this.props.order.status}
-                    dropdownTextStyle={{fontSize: 12, height: 15}}
-                    onSelect={(value) => this.setState({statusBuf : value})}
+                    dropdownTextStyle={{fontSize: 12}}
+                    onSelect={(index,value) => this.editStatus(value)}
                 />
                 <Text style={styles.paramRowText} />
             </View>
@@ -117,6 +133,14 @@ class Order extends Component {
                 <Text style={styles.paramRowText}>Time field :</Text>
                 <Text style={styles.paramRowText}>{this.props.order.delivery_time}</Text>
                 <Text style={styles.paramRowText} />
+            </View>
+            <View style={styles.paramRow}>
+                <Button
+                    onPress={this.onDeleteButton}
+                    title="Delete"
+                    color='#000000'
+                    style={styles.button}
+                />
             </View>
         </View>
     );
@@ -131,7 +155,7 @@ const mapStateToProps = (state) => {
     return { order, orders };
 };
 
-export default connect(mapStateToProps, { orderRequest, updateOrderRequest })( Order );
+export default connect(mapStateToProps, { orderRequest, updateOrderRequest, ordersRequest, orderDeleteRequest })( Order );
 
 const styles = StyleSheet.create({
     container: {
@@ -176,7 +200,7 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     dropdown_dropdown: {
-        height: 50,
+        height: 70,
     }
 });
 

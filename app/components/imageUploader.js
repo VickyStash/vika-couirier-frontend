@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { ImagePicker } from 'expo';
 import {View, Button, Image, Dimensions, StyleSheet, Text} from 'react-native';
+import { updateOrderRequest } from '../actions';
+import { connect } from 'react-redux';
 import Geocoder from 'react-native-geocoder';
 
 const { width, height } = Dimensions.get('window');
 
-export default class imageUploader extends Component {
+class imageUploader extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,6 +27,13 @@ export default class imageUploader extends Component {
         });
         if (!result.cancelled) {
             this.setState({ image: result.uri });
+            this.props.updateOrderRequest(
+                this.props.order._id,
+                this.props.order.adress,
+                this.props.order.delivery_time,
+                this.props.order.status,
+                result.uri,
+            );
             this.refresh();
         }
     };
@@ -42,10 +51,18 @@ export default class imageUploader extends Component {
         );
     };
 
+    componentDidMount(){
+
+    }
+
     render() {
         return(
             <View>
-                <Image style={{width: 'auto', height: ((height-40)/10)*3}} source={{uri: this.state.image}} />
+                {this.props.order.photo===' ' ?
+                    <Image style={{width: 'auto', height: ((height-40)/10)*3}} source={{uri: 'https://sigma-static-files.imgix.net/default_profile_pic.png'}} />
+                    :
+                    <Image style={{width: 'auto', height: ((height-40)/10)*3}} source={{uri: this.props.order.photo}} />
+                }
                 <Button
                     onPress={this.uploadImage}
                     title={'Upload a photo'}
@@ -56,6 +73,13 @@ export default class imageUploader extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    const { order, orders } = state.order;
+    return { order, orders };
+};
+
+export default connect(mapStateToProps, { updateOrderRequest })( imageUploader );
 
 const styles = StyleSheet.create({
     locationParam: {
